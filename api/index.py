@@ -1,14 +1,11 @@
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/")
-def read_root():
-    return {"Hello": "World", "status": "working"}
-
-@app.get("/health")
-def health():
-    return {"status": "healthy"}
-
-# Vercel handler
-handler = app
+def handler(event, context):
+    return {
+        'statusCode': 200,
+        'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Allow-Methods': '*'
+        },
+        'body': '{"message": "AI Ruleset Generator API is working!", "status": "ok"}'
+    }

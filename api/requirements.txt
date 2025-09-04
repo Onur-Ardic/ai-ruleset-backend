@@ -1,1 +1,1 @@
-fastapi
+# No dependencies - pure Python
