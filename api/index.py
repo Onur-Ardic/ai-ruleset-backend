@@ -3,11 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 import sys
 import os
 
-# Backend klasörünü path'e ekle
-backend_path = os.path.join(os.path.dirname(__file__), '..', 'backend')
-sys.path.insert(0, backend_path)
+# Proje kök dizinini path'e ekle
+project_root = os.path.join(os.path.dirname(__file__), '..')
+sys.path.insert(0, project_root)
 
-# Backend modüllerini import et
+# App modüllerini import et
 from app.core.config import settings
 from app.routers.main import router
 
