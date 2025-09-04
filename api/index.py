@@ -1,75 +1,69 @@
-from flask import Flask, jsonify, request
-from flask_cors import CORS
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 import sys
 import os
+from typing import Dict, Any
+from pydantic import BaseModel
 
-# Create Flask application
-application = Flask(__name__)
+app = FastAPI(
+    title="AI Ruleset Generator API",
+    description="API for generating project rulesets using AI",
+    version="1.0.0"
+)
 
-# Configure CORS with specific settings
-CORS(application, 
-     origins=["*"],
-     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-     allow_headers=["Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
-     supports_credentials=True)
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-# Add CORS headers manually as well
-@application.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-    response.headers.add('Access-Control-Allow-Credentials', 'true')
-    return response
+# Request models
+class RulesetRequest(BaseModel):
+    project_type: str = "web"
+    language: str = "javascript"
+    description: str = ""
 
-@application.route('/')
-def home():
-    return jsonify({
+@app.get("/")
+async def home():
+    return {
         "message": "AI Ruleset Generator API is working!", 
         "status": "ok",
         "version": "1.0.0"
-    })
+    }
 
-@application.route('/health')
-def health():
-    return jsonify({
+@app.get("/health")
+async def health():
+    return {
         "status": "healthy", 
         "version": "1.0.0"
-    })
+    }
 
-@application.route('/test')
-def test():
-    return jsonify({
+@app.get("/test")
+async def test():
+    return {
         "test": "successful",
         "environment": "vercel", 
         "python_version": sys.version,
         "current_dir": os.getcwd()
-    })
+    }
 
-@application.route('/generate-ruleset', methods=['POST', 'OPTIONS'])
-def generate_ruleset():
-    # Handle preflight OPTIONS request
-    if request.method == 'OPTIONS':
-        response = jsonify({'status': 'ok'})
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-        response.headers.add('Access-Control-Allow-Methods', 'POST')
-        return response
-    
+@app.post("/generate-ruleset")
+async def generate_ruleset(request_data: RulesetRequest):
     try:
-        data = request.get_json()
-        if not data:
-            return jsonify({"error": "No JSON data provided"}), 400
-        
-        project_type = data.get('project_type', 'web')
-        language = data.get('language', 'javascript')
-        description = data.get('description', '')
+        project_type = request_data.project_type
+        language = request_data.language
+        description = request_data.description
         
         # Try to use AI service if available
         try:
             # Add project root to path for imports
             project_root = os.path.join(os.path.dirname(__file__), '..')
-            sys.path.insert(0, project_root)
+            if project_root not in sys.path:
+                sys.path.insert(0, project_root)
             
             from app.services.ai_service import AIService
             
@@ -80,7 +74,7 @@ def generate_ruleset():
                 description=description
             )
             
-            return jsonify({"ruleset": result, "source": "AI Generated"})
+            return {"ruleset": result, "source": "AI Generated"}
             
         except Exception as ai_error:
             # Fallback to basic ruleset if AI fails
@@ -102,10 +96,10 @@ def generate_ruleset():
                 "note": f"Basic ruleset for {project_type} project. AI service unavailable: {str(ai_error)}"
             }
             
-            return jsonify({"ruleset": basic_ruleset, "source": "Fallback Template"})
+            return {"ruleset": basic_ruleset, "source": "Fallback Template"}
         
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        raise HTTPException(status_code=500, detail=str(e))
 
 def _get_tools_for_language(language):
     """Get recommended tools based on programming language"""
@@ -120,10 +114,5 @@ def _get_tools_for_language(language):
     }
     return tools_map.get(language.lower(), ['ESLint', 'Prettier', 'Jest'])
 
-# Vercel handler - export the app
-app = application
-handler = application
-
-# For local development
-if __name__ == "__main__":
-    application.run(debug=True)
+# Vercel handler - Bu çok önemli!
+handler = app
