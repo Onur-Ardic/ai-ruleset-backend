@@ -125,55 +125,44 @@ async def get_frameworks():
 @router.options("/project-categories")
 async def get_project_categories():
     """Proje kategorilerini döndür"""
-    categories = [
-        {
-            "id": "web",
-            "name": "Web Application", 
-            "description": "Frontend and full-stack web applications",
-            "icon": "🌐"
+    return {
+        "categories": ['frontend', 'backend', 'fullstack', 'mobile'],
+        "frontend_options": {
+            "frameworks": ['React', 'Vue.js', 'Angular', 'Svelte', 'Next.js', 'Nuxt.js', 'SvelteKit'],
+            "styling_approaches": ['CSS', 'SCSS/SASS', 'Styled Components', 'Tailwind CSS', 'Emotion', 'CSS Modules'],
+            "state_management": ['useState', 'Zustand', 'Redux Toolkit', 'TanStack Query', 'Jotai', 'Valtio'],
+            "http_clients": ['Fetch API', 'Axios', 'TanStack Query', 'SWR', 'Apollo Client'],
+            "ui_libraries": ['None', 'Material-UI', 'Ant Design', 'Chakra UI', 'Mantine', 'React Bootstrap'],
+            "build_tools": ['Vite', 'Webpack', 'Next.js', 'Create React App', 'Parcel', 'Rollup'],
+            "testing_frameworks": ['Jest', 'Vitest', 'Cypress', 'Playwright', 'Testing Library']
         },
-        {
-            "id": "api", 
-            "name": "REST API",
-            "description": "Backend APIs and microservices",
-            "icon": "🔗"
+        "backend_options": {
+            "languages": ['Python', 'JavaScript/Node.js', 'Java', 'C#', 'Go', 'Rust', 'PHP'],
+            "frameworks": ['FastAPI', 'Django', 'Express.js', 'Spring Boot', 'ASP.NET Core', 'Gin', 'Laravel'],
+            "databases": ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'SQLite', 'Cassandra', 'DynamoDB'],
+            "auth_methods": ['JWT', 'Session-based', 'OAuth 2.0', 'Auth0', 'Firebase Auth', 'Supabase Auth'],
+            "api_styles": ['REST', 'GraphQL', 'gRPC', 'tRPC'],
+            "orm_tools": ['Prisma', 'TypeORM', 'Sequelize', 'SQLAlchemy', 'Mongoose', 'Drizzle']
         },
-        {
-            "id": "mobile",
-            "name": "Mobile App",
-            "description": "iOS, Android, and cross-platform mobile apps", 
-            "icon": "📱"
+        "fullstack_options": {
+            "frameworks": ['Next.js', 'Nuxt.js', 'SvelteKit', 'Remix', 'T3 Stack', 'MEAN', 'MERN'],
+            "meta_frameworks": ['Next.js', 'Nuxt.js', 'SvelteKit', 'Remix', 'Astro'],
+            "deployment_platforms": ['Vercel', 'Netlify', 'AWS', 'Railway', 'Render', 'Heroku'],
+            "databases": ['PostgreSQL', 'MySQL', 'MongoDB', 'Supabase', 'PlanetScale', 'Firebase']
         },
-        {
-            "id": "desktop",
-            "name": "Desktop Application",
-            "description": "Native desktop applications",
-            "icon": "💻"
+        "mobile_options": {
+            "frameworks": ['React Native', 'Flutter', 'Ionic', 'Xamarin', 'Cordova/PhoneGap'],
+            "native_languages": ['Swift/iOS', 'Kotlin/Android', 'Java/Android', 'Objective-C'],
+            "state_management": ['Redux', 'MobX', 'Provider', 'Riverpod', 'Bloc'],
+            "navigation": ['React Navigation', 'Navigator', 'GoRouter', 'AutoRoute'],
+            "ui_libraries": ['NativeBase', 'React Native Elements', 'Tamagui', 'Gluestack'],
+            "backends": ['Firebase', 'Supabase', 'AWS Amplify', 'Custom API']
         },
-        {
-            "id": "cli",
-            "name": "Command Line Tool", 
-            "description": "Command line interfaces and scripts",
-            "icon": "⌨️"
-        },
-        {
-            "id": "library",
-            "name": "Library/Package",
-            "description": "Reusable libraries and packages",
-            "icon": "📦"
-        },
-        {
-            "id": "microservice", 
-            "name": "Microservice",
-            "description": "Containerized microservices",
-            "icon": "🐳"
-        },
-        {
-            "id": "data",
-            "name": "Data Science/ML",
-            "description": "Data analysis and machine learning projects",
-            "icon": "🤖"
+        "common_options": {
+            "project_types": ['Web Application', 'Mobile App', 'API/Microservice', 'CLI Tool', 'Desktop App', 'Library'],
+            "deployment_platforms": ['AWS', 'Vercel', 'Netlify', 'Heroku', 'Railway', 'Render', 'DigitalOcean'],
+            "code_styles": ['Standard', 'Prettier', 'ESLint', 'Airbnb', 'Google', 'TypeScript'],
+            "version_control": ['Git', 'GitHub', 'GitLab', 'Bitbucket'],
+            "ci_cd": ['GitHub Actions', 'GitLab CI', 'Jenkins', 'CircleCI', 'Travis CI']
         }
-    ]
-    
-    return {"categories": categories}
+    }
