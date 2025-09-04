@@ -13,12 +13,12 @@ app = FastAPI(
     version=settings.VERSION
 )
 
-# CORS middleware ekle
+# CORS middleware ekle - Daha açık ayarlar
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.ALLOWED_ORIGINS,
+    allow_origins=["*"],  # Tüm origin'lere izin ver
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 

@@ -27,6 +27,7 @@ async def root():
     }
 
 @router.get("/health", response_model=HealthResponse)
+@router.options("/health")
 async def health_check():
     """Sağlık kontrolü"""
     try:
@@ -121,6 +122,7 @@ async def get_frameworks():
     return FrameworksResponse(frameworks=frameworks)
 
 @router.get("/project-categories")
+@router.options("/project-categories")
 async def get_project_categories():
     """Proje kategorilerini döndür"""
     categories = [

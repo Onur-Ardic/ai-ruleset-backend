@@ -24,7 +24,10 @@ class Settings:
     ALLOWED_ORIGINS: list = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-        "http://localhost:8001"
+        "http://localhost:8001",
+        "https://localhost:3000",
+        "https://127.0.0.1:3000",
+        "*"  # Tüm origin'lere izin ver (development için)
     ]
     
     # AI Provider Ayarları
