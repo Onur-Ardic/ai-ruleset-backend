@@ -119,3 +119,59 @@ async def get_frameworks():
     }
     
     return FrameworksResponse(frameworks=frameworks)
+
+@router.get("/project-categories")
+async def get_project_categories():
+    """Proje kategorilerini döndür"""
+    categories = [
+        {
+            "id": "web",
+            "name": "Web Application", 
+            "description": "Frontend and full-stack web applications",
+            "icon": "🌐"
+        },
+        {
+            "id": "api", 
+            "name": "REST API",
+            "description": "Backend APIs and microservices",
+            "icon": "🔗"
+        },
+        {
+            "id": "mobile",
+            "name": "Mobile App",
+            "description": "iOS, Android, and cross-platform mobile apps", 
+            "icon": "📱"
+        },
+        {
+            "id": "desktop",
+            "name": "Desktop Application",
+            "description": "Native desktop applications",
+            "icon": "💻"
+        },
+        {
+            "id": "cli",
+            "name": "Command Line Tool", 
+            "description": "Command line interfaces and scripts",
+            "icon": "⌨️"
+        },
+        {
+            "id": "library",
+            "name": "Library/Package",
+            "description": "Reusable libraries and packages",
+            "icon": "📦"
+        },
+        {
+            "id": "microservice", 
+            "name": "Microservice",
+            "description": "Containerized microservices",
+            "icon": "🐳"
+        },
+        {
+            "id": "data",
+            "name": "Data Science/ML",
+            "description": "Data analysis and machine learning projects",
+            "icon": "🤖"
+        }
+    ]
+    
+    return {"categories": categories}
