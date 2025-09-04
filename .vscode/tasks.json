@@ -1,0 +1,33 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start Backend Server with Ollama",
+			"type": "shell",
+			"command": "c:/Users/ardic/OneDrive/Masaüstü/Code/AIRuleset/.venv/Scripts/python.exe",
+			"args": [
+				"main.py"
+			],
+			"isBackground": true,
+			"group": "build"
+		},
+		{
+			"label": "Start FastAPI Server",
+			"type": "shell",
+			"command": "c:/Users/ardic/OneDrive/Masaüstü/Code/AIRuleset/.venv/Scripts/python.exe",
+			"args": [
+				"-m",
+				"uvicorn",
+				"main:app",
+				"--host",
+				"127.0.0.1",
+				"--port",
+				"8001",
+				"--reload"
+			],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}
