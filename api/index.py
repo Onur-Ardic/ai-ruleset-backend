@@ -3,17 +3,18 @@ from flask_cors import CORS
 import sys
 import os
 
-app = Flask(__name__)
+# Create Flask application
+application = Flask(__name__)
 
 # Configure CORS with specific settings
-CORS(app, 
+CORS(application, 
      origins=["*"],
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
      allow_headers=["Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
      supports_credentials=True)
 
 # Add CORS headers manually as well
-@app.after_request
+@application.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
@@ -21,7 +22,7 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Credentials', 'true')
     return response
 
-@app.route('/')
+@application.route('/')
 def home():
     return jsonify({
         "message": "AI Ruleset Generator API is working!", 
@@ -29,14 +30,14 @@ def home():
         "version": "1.0.0"
     })
 
-@app.route('/health')
+@application.route('/health')
 def health():
     return jsonify({
         "status": "healthy", 
         "version": "1.0.0"
     })
 
-@app.route('/test')
+@application.route('/test')
 def test():
     return jsonify({
         "test": "successful",
@@ -45,7 +46,7 @@ def test():
         "current_dir": os.getcwd()
     })
 
-@app.route('/generate-ruleset', methods=['POST', 'OPTIONS'])
+@application.route('/generate-ruleset', methods=['POST', 'OPTIONS'])
 def generate_ruleset():
     # Handle preflight OPTIONS request
     if request.method == 'OPTIONS':
@@ -119,6 +120,10 @@ def _get_tools_for_language(language):
     }
     return tools_map.get(language.lower(), ['ESLint', 'Prettier', 'Jest'])
 
-# Vercel handler
+# Vercel handler - export the app
+app = application
+handler = application
+
+# For local development
 if __name__ == "__main__":
-    app.run()
+    application.run(debug=True)
